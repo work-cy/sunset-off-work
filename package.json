@@ -1,0 +1,24 @@
+{
+  "name": "sunset-off-work",
+  "private": true,
+  "version": "1.0.0",
+  "description": "太阳下班 — a Remotion recreation of an animated short: a plane tows the setting sun away on a swing.",
+  "type": "module",
+  "scripts": {
+    "dev": "remotion studio",
+    "compositions": "remotion compositions",
+    "render": "remotion render Sunset30fps out/sunset-off-work.mp4 --codec h264 --pixel-format yuv420p",
+    "render:alpha": "remotion render Sunset30fps out/sunset-off-work.mov --codec prores --prores-profile 4444 --pixel-format yuva444p10le --image-format png",
+    "still": "remotion still Sunset30fps out/frame.png"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.438",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "4.0.438"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4"
+  }
+}
