@@ -35,10 +35,33 @@ motion/sunset/
   timeline.js        the whole animation: phase table + per-frame state
   Scene.jsx          layer composition, sky/sea gradients, sea reflection
   Stars.jsx          deterministic starfield
-  Sun.jsx            the sun — gradient body, face, arms, legs
+  Clouds.jsx         drifting cloud bands, tinted by altitude and time of day
+  Scenery.jsx        horizon islands + flapping birds
+  Sun.jsx            the sun — gradient body, face, arms, legs, light rays
   Swing.jsx          ropes + seat
   Plane.jsx          plane silhouette + contrails
+  Title.jsx          the end title card
 ```
+
+### Beyond the reference
+
+The reference is a deliberately minimal illustration. This build keeps its composition and
+palette but adds layers to fill the frame out:
+
+- **Clouds** — six overlapping ellipse lobes each, drifting right on a per-cloud speed and
+  tinted from `light` to `dark` by altitude, so low clouds catch the sunset and high ones
+  sink into the dusk
+- **Horizon islands** — two low silhouettes that give the sea a far shore and pull depth
+  into the frame
+- **Birds** — six silhouettes with sine-driven wing flaps, drifting slowly across
+- **Light rays** — rotating wedges fading outward from the sun, clipped to the sky. Without
+  the clip the downward rays sweep across the sea and the effect reads as a hard sunburst
+  instead of atmospheric haze
+- **Title card** — 「太阳下班」/ THE SUN CLOCKS OFF, fading up as the night comes in
+
+The CJK stack lists Chinese-capable families **first**. Put a Latin-only font at the front
+and the browser's fallback can render the glyphs with a wrong-looking background and a much
+weaker glow.
 
 ### Everything is `f(frame)`
 

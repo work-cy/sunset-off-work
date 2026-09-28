@@ -1,4 +1,13 @@
-import { GEOMETRY, REFLECTION, SEA_KEYFRAMES, SKY_KEYFRAMES } from "./config.js";
+import {
+  CLOUD_KEYFRAMES,
+  GEOMETRY,
+  REFLECTION,
+  SCENERY_KEYFRAMES,
+  SEA_KEYFRAMES,
+  SKY_KEYFRAMES,
+  TITLE,
+  BIRD_COLOR,
+} from "./config.js";
 
 // 相位以秒标注，再按实际 fps 换算。改 fps 不会改变节奏。
 const PHASES = Object.freeze({
@@ -53,6 +62,21 @@ const sampleStops = (keyframes, progress) => {
     offset,
     lerpColor(color, b.stops[i][1], t),
   ]);
+};
+
+// 单色关键帧（云、远山）用同一个插值口径。
+const sampleColor = (keyframes, progress, key) => {
+  let index = 0;
+  while (index < keyframes.length - 2 && progress > keyframes[index + 1].at) {
+    index += 1;
+  }
+
+  const a = keyframes[index];
+  const b = keyframes[index + 1] ?? a;
+  const span = b.at - a.at;
+  const t = span <= 0 ? 0 : clamp01((progress - a.at) / span);
+
+  return lerpColor(a[key], b[key], t);
 };
 
 const toCssGradient = (stops, angle) =>
@@ -161,6 +185,22 @@ export const buildSceneProps = ({ frame, fps }) => {
     skyGradient: toCssGradient(sampleStops(SKY_KEYFRAMES, progress), "to bottom"),
     seaGradient: toSeaGradient(sampleStops(SEA_KEYFRAMES, progress)),
     starsOpacity,
+    clouds: {
+      light: sampleColor(CLOUD_KEYFRAMES, progress, "light"),
+      dark: sampleColor(CLOUD_KEYFRAMES, progress, "dark"),
+    },
+    sceneryColor: sampleColor(SCENERY_KEYFRAMES, progress, "color"),
+    birdColor: BIRD_COLOR,
+    // 标题在太阳被拖走之后浮出来
+    titleOpacity: smoothstep(
+      seg(
+        bounded,
+        Math.round(TITLE.startSeconds * fps),
+        Math.round((TITLE.startSeconds + TITLE.fadeSeconds) * fps)
+      )
+    ),
+    // 太阳的光柱：贴海平面时最强，被吊走就散掉
+    rayOpacity: 0.13 * (1 - smoothstep(seg(bounded, timeline.boardEnd, timeline.departEnd))),
     reflection: {
       opacity: reflectionOpacity,
       color: REFLECTION.color,

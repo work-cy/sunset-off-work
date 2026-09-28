@@ -61,11 +61,11 @@ export const SKY_KEYFRAMES = Object.freeze([
   {
     at: 0.88,
     stops: [
-      [0.0, "#8A5228"],
-      [0.28, "#74463A"],
-      [0.5, "#5A3F4E"],
-      [0.65, "#3E3350"],
-      [0.76, "#2E2A44"],
+      [0.0, "#6B3F20"],
+      [0.28, "#573832"],
+      [0.5, "#42344A"],
+      [0.65, "#2C2743"],
+      [0.76, "#211E37"],
     ],
   },
   {
@@ -120,4 +120,31 @@ export const SEA_KEYFRAMES = Object.freeze([
 export const REFLECTION = Object.freeze({
   color: "#E8A24A",
   peakOpacity: 0.72,
+});
+
+// 云：靠近海平线的受光偏暖，高处的偏冷，两者随时间一起沉下去。
+export const CLOUD_KEYFRAMES = Object.freeze([
+  { at: 0, light: "#F7BE72", dark: "#B06A70" },
+  { at: 0.68, light: "#F2B264", dark: "#A66268" },
+  { at: 0.88, light: "#5E3C3C", dark: "#3A2F48" },
+  { at: 1, light: "#16202E", dark: "#0E1726" },
+]);
+
+// 海平线上的远山剪影，比天空略深一档，负责把纵深拉开。
+export const SCENERY_KEYFRAMES = Object.freeze([
+  { at: 0, color: "#7A6280" },
+  { at: 0.68, color: "#745C7C" },
+  { at: 0.88, color: "#272244" },
+  { at: 1, color: "#0D1722" },
+]);
+
+export const BIRD_COLOR = "#3A2F44";
+
+export const TITLE = Object.freeze({
+  main: "太阳下班",
+  sub: "THE SUN CLOCKS OFF",
+  // 太阳被拖走之后标题才浮出来
+  startSeconds: 23.2,
+  fadeSeconds: 1.8,
+  y: 0.38,
 });

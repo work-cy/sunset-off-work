@@ -6,6 +6,9 @@ import { Stars } from "./Stars.jsx";
 import { Sun } from "./Sun.jsx";
 import { Swing } from "./Swing.jsx";
 import { Plane } from "./Plane.jsx";
+import { Clouds } from "./Clouds.jsx";
+import { Birds, Islands } from "./Scenery.jsx";
+import { Title } from "./Title.jsx";
 
 const { width: W, height: H } = VIDEO;
 const HORIZON = GEOMETRY.horizonY * H;
@@ -64,7 +67,7 @@ export const SunsetScene = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const props = buildSceneProps({ frame, fps });
-  const { sun, swing, plane, reflection, starsOpacity } = props;
+  const { sun, swing, plane, reflection, starsOpacity, clouds } = props;
 
   const planeX = plane.x * W;
   const planeY = plane.y * H;
@@ -76,6 +79,28 @@ export const SunsetScene = () => {
         width={W}
         height={H}
         horizonY={GEOMETRY.horizonY}
+      />
+
+      {/* 云与远山：都在海平线之上 */}
+      <Clouds
+        frame={frame}
+        width={W}
+        height={H}
+        horizonY={GEOMETRY.horizonY}
+        light={clouds.light}
+        dark={clouds.dark}
+      />
+      <Islands
+        color={props.sceneryColor}
+        width={W}
+        height={H}
+        horizonY={GEOMETRY.horizonY}
+      />
+      <Birds
+        color={props.birdColor}
+        frame={frame}
+        width={W}
+        height={H}
       />
 
       {/* 海面 */}
@@ -108,6 +133,9 @@ export const SunsetScene = () => {
           rx={sun.radiusX * W}
           ry={sun.radiusY * H}
           armsUp={sun.armsUp}
+          frame={frame}
+          rayOpacity={props.rayOpacity}
+          clipY={HORIZON}
         />
         <Swing
           planeX={planeX}
@@ -126,6 +154,8 @@ export const SunsetScene = () => {
           speed={plane.speed}
         />
       </svg>
+
+      <Title opacity={props.titleOpacity} height={H} />
     </div>
   );
 };
